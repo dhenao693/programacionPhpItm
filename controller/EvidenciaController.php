@@ -6,7 +6,7 @@
             $this->objEvidencia = $objEvidencia;
         }
 
-        function guardar(){
+        function guardarEvidencia(){
             $titu=$this->objEvidencia->getTitulo();
             $des=$this->objEvidencia->getDescripcion();
             $tip=$this->objEvidencia->getTipo();
@@ -31,10 +31,24 @@
             $DB->cerrarBd();
         }   
 
+        function guardarEvidenciaHistorico(){
+            $ID_EVIDENCIA_DETALLE=$this->objEvidencia->getID_EVIDENCIA_DETALLE();
+            $USUARIO_MODIFICACION=$this->objEvidencia->getUSUARIO_MODIFICACION();
+            $FechaModifi=$this->objEvidencia->getFECHA_MODIFICACION();
+            $Estado_Anterior=$this->objEvidencia->getESTADO_ANTERIOR();
+            $Estado_Actual=$this->objEvidencia->getESTADO_ACTUAL();
+
+            $sql="INSERT INTO EVIDENCIA_DETALLE VALUES('"."','".$ID_EVIDENCIA."','".$USUARIO_MODIFICACION."','".$FechaModifi."','".$Estado_Anterior."','".$Estado_Actual."')";
+            $DB = new ControlConexion();
+            $DB->abrirBd("localhost","root","","PROGRAMACION_PHP", 3306);
+            $DB->ejecutarComandoSql($sql);
+            $DB->cerrarBd();
+        }
+
         function borrar(){
             $ID_EVIDENCIA = $this->$objEvidencia->getID_EVIDENCIA();
 
-            $sql="DELETE FROM EVIDENCIA WHERE CODIGO='".$ID_EVIDENCIA."'";
+            $sql="DELETE FROM EVIDENCIA WHERE ID_EVIDENCIA='".$ID_EVIDENCIA."'";
             $DB = new ControlConexion();
             $DB->abrirBd("localhost","root","","PROGRAMACION_PHP", 3306);
             $DB->ejecutarComandoSql($sql);
@@ -44,7 +58,7 @@
         function consultar(){
             $ID_EVIDENCIA = $this->$objEvidencia->getID_EVIDENCIA();
 
-            $sql="SELECT * FROM PERSONA WHERE CODIGO='".$ID_EVIDENCIA."'";
+            $sql="SELECT * FROM EVIDENCIA WHERE ID_EVIDENCIA='".$ID_EVIDENCIA."'";
             $DB = new ControlConexion();
             $DB->abrirBd("localhost","root","","PROGRAMACION_PHP", 3306);
             $recordSet=$DB->ejecutarSelect($sql);
